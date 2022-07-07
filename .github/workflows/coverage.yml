@@ -29,26 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # ---------------------------------------------------------------------------------
-      # Clones a repository.
-      # If it's private, it also requires ssh-key and adding it to repo secrets on GitHub
-      # ---------------------------------------------------------------------------------
-      # - name: Get orquestra-quantum
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: zapatacomputing/orquestra-quantum
-      #     path: orquestra-quantum
-      #     ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # ------------------------------------------------------------------------
-      # Loads private SSH key to the SSH agent. Allows to install dependencies
-      # from private git repos, but requires setting `secrets.SSH_PRIVATE_KEY`
-      # in repo settings.
-      # ------------------------------------------------------------------------
-      # - uses: ./subtrees/z_quantum_actions/actions/ssh_setup
-      #   with:
-      #     ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Get orquestra-quantum
+        uses: actions/checkout@v2
+        with:
+          repository: zapatacomputing/orquestra-quantum
+          path: orquestra-quantum
 
       - uses: ./subtrees/z_quantum_actions/actions/coverage
-        with:
-          codecov_secret: ${{ secrets.CODECOV_TOKEN }}
