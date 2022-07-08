@@ -14,7 +14,7 @@ def export_to_braket(circuit: Circuit) -> BraketCircuit:
     """Converts the circuit to a Braket Circuit object.
 
     Args:
-      circuit (zquantum.core.Circuit): the circuit to convert
+      circuit : the circuit to convert
 
     Returns:
       BraketCircuit

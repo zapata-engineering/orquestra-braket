@@ -8,15 +8,27 @@ from orquestra.quantum.api.backend_test import (
     QuantumSimulatorGatesTest,
     QuantumSimulatorTests,
 )
+from orquestra.quantum.api.estimation import EstimationTask
 from orquestra.quantum.circuits import CNOT, Circuit, H, X
+from orquestra.quantum.estimation import estimate_expectation_values_by_averaging
+from orquestra.quantum.measurements import ExpectationValues
 from orquestra.quantum.openfermion.ops import QubitOperator
 
 from orquestra.integrations.braket.simulator import BraketLocalSimulator
 
 
-@pytest.fixture()
-def backend():
-    return BraketLocalSimulator()
+@pytest.fixture(
+    params=[
+        {
+            "noise_model": None,
+        },
+        {
+            "noise_model": Noise.Depolarizing(probability=0.0),
+        },
+    ]
+)
+def backend(request):
+    return BraketLocalSimulator(**request.param)
 
 
 @pytest.fixture()
@@ -24,10 +36,16 @@ def wf_simulator():
     return BraketLocalSimulator()
 
 
+@pytest.fixture()
+def noisy_simulator():
+    noise_model = Noise.Depolarizing(probability=0.0002)
+    return BraketLocalSimulator(noise_model=noise_model)
+
+
 class TestBraketLocalSimulator(QuantumSimulatorTests):
     def test_setup_basic_simulators(self, wf_simulator):
         assert isinstance(wf_simulator, BraketLocalSimulator)
-        assert wf_simulator.noise_model is None
+        # assert wf_simulator.noise_model is None
 
     def test_run_circuit_and_measure(self):
         # Given

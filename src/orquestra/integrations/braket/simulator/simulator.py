@@ -39,7 +39,7 @@ class BraketLocalSimulator(QuantumSimulator):
 
         result_object = self.simulator.run(braket_circuit, shots=n_samples).result()
 
-        return get_measurement_from_braket_result_object(result_object)
+        return _get_measurement_from_braket_result_object(result_object)
 
     def _get_wavefunction_from_native_circuit(
         self,
@@ -50,8 +50,7 @@ class BraketLocalSimulator(QuantumSimulator):
 
         if initial_state[0] != 1:
             raise ValueError(
-                "AWS Braket simulators only accept ground state vectors\n"
-                "as initial_state vector"
+                "AWS Braket simulators can be initialized only in the zero states"
             )
 
         braket_circuit.state_vector()
@@ -104,7 +103,7 @@ class BraketLocalSimulator(QuantumSimulator):
         return expectation_values_to_real(ExpectationValues(np.asarray(values)))
 
 
-def get_measurement_from_braket_result_object(result_object):
+def _get_measurement_from_braket_result_object(result_object):
     samples = [
         tuple(key for key in numpy_bitstring)
         for numpy_bitstring in result_object.measurements
