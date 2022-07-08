@@ -1,3 +1,7 @@
+################################################################################
+# © Copyright 2021-2022 Zapata Computing Inc.
+################################################################################
+
 from typing import Callable, Dict
 
 from braket.circuits import Circuit as BraketCircuit
