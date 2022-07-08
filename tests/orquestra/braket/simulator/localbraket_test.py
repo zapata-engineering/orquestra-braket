@@ -4,7 +4,6 @@
 import numpy as np
 import pytest
 from braket.circuits.noise import Noise
-from cirq import depolarize
 from orquestra.quantum.api.backend_test import (
     QuantumSimulatorGatesTest,
     QuantumSimulatorTests,
