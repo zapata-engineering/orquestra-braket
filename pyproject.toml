@@ -25,6 +25,7 @@ module = [
     'scipy.*',
     'sympy.*',
     'rapidjson',
+    'braket',
 ]
 ignore_missing_imports = true
 
