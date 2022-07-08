@@ -3,7 +3,6 @@ from typing import Callable, Dict
 from braket.circuits import Circuit as BraketCircuit
 from braket.circuits.gate import Gate as BraketGate
 from braket.circuits.instruction import Instruction
-from grpc import Call
 from orquestra.quantum.circuits import Circuit, I
 
 
