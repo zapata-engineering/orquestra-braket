@@ -1,7 +1,5 @@
 ################################################################################
-# © Copyright 2020-2022 Zapata Computing Inc.
+# © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
 
-
-def bar():
-    return 42
+from .simulator import BraketLocalSimulator

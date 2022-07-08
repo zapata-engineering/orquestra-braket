@@ -1,8 +1,6 @@
 ################################################################################
-# © Copyright 2020-2022 Zapata Computing Inc.
+# © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
-from orquestra.pythontemplate.foo import bar
+from ._circuit_conversions import export_to_braket
 
-
-def test_bar_returns_42():
-    assert bar() == 42
+# from ._openfermion_conversions import qubitop_to_paulisum
