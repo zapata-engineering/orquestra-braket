@@ -1,12 +1,10 @@
 ################################################################################
 # © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
-import sys
-import warnings
+
 from typing import Dict, List, Optional, Sequence, Union
 
 import numpy as np
-from braket.devices import LocalSimulator
 from orquestra.quantum.api.backend import QuantumSimulator, StateVector
 from orquestra.quantum.circuits import Circuit
 from orquestra.quantum.measurements import (
@@ -19,16 +17,13 @@ from orquestra.quantum.openfermion import SymbolicOperator, get_sparse_operator
 from ..conversions import export_to_braket
 
 
-class BraketLocalSimulator(QuantumSimulator):
+class BraketSimulator(QuantumSimulator):
     supports_batching = False
 
-    def __init__(self, noise_model=None):
+    def __init__(self, simulator, noise_model=None):
         super().__init__()
 
-        if noise_model is None:
-            self.simulator = LocalSimulator(backend="braket_sv")
-        else:
-            self.simulator = LocalSimulator(backend="braket_dm")
+        self.simulator = simulator
 
         self.noise_model = noise_model
 
