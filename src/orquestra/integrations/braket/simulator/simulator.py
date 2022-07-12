@@ -39,7 +39,7 @@ class BraketSimulator(QuantumSimulator):
     def _get_wavefunction_from_native_circuit(
         self,
         circuit: Circuit,
-        initial_state: StateVector,  # TODO: local_simulator - no initial_state
+        initial_state: StateVector,
     ) -> StateVector:
         braket_circuit = export_to_braket(circuit)
 
