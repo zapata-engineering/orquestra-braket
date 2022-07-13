@@ -4,7 +4,7 @@
 
 from braket.devices import LocalSimulator
 
-from .simulator import BraketSimulator
+from ._simulator import BraketSimulator
 
 
 class BraketLocalSimulator(BraketSimulator):

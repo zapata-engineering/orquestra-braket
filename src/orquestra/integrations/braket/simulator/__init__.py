@@ -3,4 +3,3 @@
 ################################################################################
 
 from .LocalSimulator import BraketLocalSimulator
-from .simulator import BraketSimulator
