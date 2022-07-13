@@ -2,6 +2,7 @@
 
 ## What is it?
 
+
 `orquestra-braket` is a [Zapata](https://www.zapatacomputing.com) library holding modules for integrating [Amazon Braket supported devices](https://docs.aws.amazon.com/braket/latest/developerguide/braket-devices.html) with [Orquestra](https://www.zapatacomputing.com/orquestra/). This version only supports Braket's `LocalSimlator()`.
 
 ## Installation
@@ -27,3 +28,4 @@ For more information regarding Orquestra and resources, please refer to the [Orq
 ## Development and contribution
 
 You can find the development guidelines in the [`orquestra-quantum` repository](https://github.com/zapatacomputing/orquestra-quantum).
+

@@ -165,6 +165,7 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
         pytest.xfail("Braket simulator only accepts zero state as initial state")
 
 
+
 class TestBraketLocalSimulatorGates(QuantumSimulatorGatesTest):
     atol_wavefunction = 1e-8
     gates_to_exclude = ["RH"]
