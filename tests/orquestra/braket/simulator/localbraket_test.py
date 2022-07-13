@@ -162,7 +162,7 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
             assert ampl1 == ampl2
 
     def test_get_wavefunction_uses_provided_initial_state(self, wf_simulator):
-        pass
+        pytest.xfail("Braket simulator only accepts zero state as initial state")
 
 
 class TestBraketLocalSimulatorGates(QuantumSimulatorGatesTest):

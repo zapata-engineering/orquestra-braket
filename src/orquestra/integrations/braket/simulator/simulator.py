@@ -18,9 +18,14 @@ from ..conversions import export_to_braket
 
 
 class BraketSimulator(QuantumSimulator):
-    supports_batching = False
-
     def __init__(self, simulator, noise_model=None):
+
+        """initializes the parameters for the system or simulator
+        Args:
+            simulator: Braket simulator that is defined by the user
+            noise_model: optional argument to define the noise model
+        """
+
         super().__init__()
 
         self.simulator = simulator
@@ -28,6 +33,15 @@ class BraketSimulator(QuantumSimulator):
         self.noise_model = noise_model
 
     def run_circuit_and_measure(self, circuit: Circuit, n_samples: int) -> Measurements:
+
+        """Run a circuit and measure a certain number of bitstrings.
+        Args:
+            circuit: the circuit to prepare the state.
+            n_samples: number of bitstrings to measure. If None, `self.n_samples`
+                is used.
+        Returns:
+            A list of bitstrings.
+        """
         super().run_circuit_and_measure(circuit, n_samples)
 
         braket_circuit = export_to_braket(circuit)
@@ -41,6 +55,20 @@ class BraketSimulator(QuantumSimulator):
         circuit: Circuit,
         initial_state: StateVector,
     ) -> StateVector:
+        """Uses the statevector simulator to create wave function
+
+        Args:
+            circuit: the circuit to prepare the state
+            initial_state: initial state of the system
+
+        Raises:
+            ValueError: Braket simulator will raise an error if the initial
+            state is not in the zero state
+
+        Returns:
+            wave function as a state vector
+        """
+
         braket_circuit = export_to_braket(circuit)
 
         if initial_state[0] != 1:
@@ -98,7 +126,13 @@ class BraketSimulator(QuantumSimulator):
         return expectation_values_to_real(ExpectationValues(np.asarray(values)))
 
 
-def _get_measurement_from_braket_result_object(result_object):
+def _get_measurement_from_braket_result_object(result_object) -> Measurements:
+    """Extract measurement bitstrings from braket result object.
+    Args:
+        result_object: object returned by braket simulator's run or run_batch.
+    Return:
+        Measurements.
+    """
     samples = [
         tuple(key for key in numpy_bitstring)
         for numpy_bitstring in result_object.measurements
