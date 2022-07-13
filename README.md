@@ -1,13 +1,3 @@
-Implement a orquestra.quantum.api.backend.QuantumBackend instance that allows a user to run quantum circuits on gate-model devices provided by Braket. [TBD how we will expect auth to be handled, see ZQS-1092: How to handle auth for Braket integrationIN PROGRESS.]
-
-Our release scripts should be updated to publish the Braket integration to Nexus.
-
-The internal docs site should be updated to include API documentation for the integration.
-
-If users are required to configure an AWS account, the docs should explain how a Zapata employee would go about doing that.
-
-Note that we can leave integrations with Braket simulators, annealers, and boson samplers for a future story.
-
 # orquestra-braket
 
 ## What is it?
