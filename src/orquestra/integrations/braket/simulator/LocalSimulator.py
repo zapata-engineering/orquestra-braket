@@ -4,10 +4,10 @@
 
 from braket.devices import LocalSimulator
 
-from ._simulator import BraketSimulator
+from ._base import BraketBasedSimulator
 
 
-class BraketLocalSimulator(BraketSimulator):
+class BraketLocalSimulator(BraketBasedSimulator):
     """Simulator using Braket's LocalSimulator.
     Args:
         noise_model: an optional noise model to pass in for noisy simulations

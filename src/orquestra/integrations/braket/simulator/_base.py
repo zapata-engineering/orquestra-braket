@@ -17,7 +17,7 @@ from orquestra.quantum.openfermion import SymbolicOperator, get_sparse_operator
 from ..conversions import export_to_braket
 
 
-class BraketSimulator(QuantumSimulator):
+class BraketBasedSimulator(QuantumSimulator):
     def __init__(self, simulator, noise_model=None):
 
         """initializes the parameters for the system or simulator
