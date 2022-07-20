@@ -26,4 +26,4 @@ For more information regarding Orquestra and resources, please refer to the [Orq
 
 ## Development and contribution
 
-You can find the development guidelines in the [`orquestra-quantum` repository](https://github.com/zapatacomputing/orquestra-quantum).
+You can find the development guidelines in the [`orquestra-core` repository](https://github.com/zapatacomputing/orquestra-core/blob/main/CONTRIBUTING.md).
