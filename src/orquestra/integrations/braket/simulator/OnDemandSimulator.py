@@ -12,9 +12,9 @@ from ._base import BraketBasedSimulator
 class BraketOnDemandSimulator(BraketBasedSimulator):
     supports_batching = False
 
-    def __init__(self, simulator: str, profile_name: str, noise_model=None):
+    def __init__(self, simulator: str, boto_session, noise_model=None):
 
-        aws_session = _get_aws_session(profile_name)
+        aws_session = AwsSession(boto_session)
 
         simulators = AwsDevice.get_devices(types=["SIMULATOR"], aws_session=aws_session)
         if simulator not in [braket_simulator.name for braket_simulator in simulators]:
@@ -34,8 +34,3 @@ def _get_simulator_arn(name, aws_session):
     ]
 
     return simulator_properties.arn
-
-
-def _get_aws_session(profile_name):
-    boto_session = boto3.session.Session(profile_name=profile_name)
-    return AwsSession(boto_session)
