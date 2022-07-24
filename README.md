@@ -36,10 +36,10 @@ from braket.aws import AwsSession, AwsDevice
 from boto3 import Session
 
 # Insert CLI profile name here
-boto_session = Session(profile_name=`profile`)
-simulator_name = "sv1"
+boto_session = Session(profile_name=`profile`, region_name='us-east-1')
+simulator_name = "SV1"
 noise_model = None
-siumulator = BraketOnDemandSimulator(simulator_name, boto_session, noise_model)
+simulator = BraketOnDemandSimulator(simulator_name, boto_session, noise_model)
 
 ```
 

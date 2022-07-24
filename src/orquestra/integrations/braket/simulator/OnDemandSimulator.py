@@ -1,8 +1,6 @@
 ################################################################################
 # © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
-
-import boto3
 from braket.aws import AwsDevice
 from braket.aws.aws_session import AwsSession
 

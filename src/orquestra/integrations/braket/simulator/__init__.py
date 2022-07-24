@@ -3,3 +3,4 @@
 ################################################################################
 
 from .LocalSimulator import BraketLocalSimulator
+from .OnDemandSimulator import BraketOnDemandSimulator
