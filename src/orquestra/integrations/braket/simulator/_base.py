@@ -2,9 +2,8 @@
 # © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
 
-from typing import Dict, List, Optional, Sequence, Union
-
 import numpy as np
+from braket.aws import AwsDevice
 from orquestra.quantum.api.backend import QuantumSimulator, StateVector
 from orquestra.quantum.circuits import Circuit
 from orquestra.quantum.measurements import (
@@ -139,3 +138,11 @@ def _get_measurement_from_braket_result_object(result_object) -> Measurements:
     ]
 
     return Measurements(samples)
+
+
+def _get_arn(name, aws_session):
+    simulator_properties = AwsDevice.get_devices(names=[name], aws_session=aws_session)[
+        0
+    ]
+
+    return simulator_properties.arn
