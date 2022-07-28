@@ -43,7 +43,47 @@ simulator = BraketOnDemandSimulator(simulator_name, boto_session, noise_model)
 
 ```
 
-The outcome of the `BraketOnDemandSimulator` will not be saved in the S3.
+Below is an example of finding the names of on-demand simulators:
+
+```
+from boto3 import Session
+from braket.aws import AwsSession
+from orquestra.integrations.braket.simulator import get_on_demand_simulator_names
+
+boto_session = Session(profile_name=`profile`, region_name='us-east-1')
+aws_session = AwsSession(boto_session)
+
+simulator_names = get_on_demand_simulator_names(aws_session)
+```
+
+## Braket QPUs
+
+This library will allow you to access the QPUs provided by AWS Braket. The process is very similar to the `BraketOnDemandSimulator`. Here is how we can get started:
+
+```
+from orquestra.integrations.braket.backend import BraketBackend
+
+QPU_name = "IonQ Device"
+backend = BraketBackend(boto_session, QPU_name)
+```
+
+If you want to find the list of QPU names provided by Braket, use the following method:
+
+```
+from orquestra.integrations.braket.backend import get_QPU_names
+
+QPU_names = get_QPU_names(aws_session)
+```
+
+After setting up the QPU, you can use the following approach to send a task to a QPU.
+
+```
+QPU_task = backend.run_circuit_and_measure(circ, n_samples)
+```
+
+Since the quantum devices are not readily accessible, the results are not returned immediately. We can monitor the status of our task by `QPU_task.state()`. You can cancel the task by `QPU.cancel()`.
+
+The outcome of the task will be stored in a [S3 Bucket](https://aws.amazon.com/s3/). You are required to have access to the bucket to retrive the results. You can find out more accessing S3 bucket [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-bucket-intro.html)
 
 ## Development and contribution
 

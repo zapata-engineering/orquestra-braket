@@ -3,4 +3,4 @@
 ################################################################################
 
 from .LocalSimulator import BraketLocalSimulator
-from .OnDemandSimulator import BraketOnDemandSimulator
+from .OnDemandSimulator import BraketOnDemandSimulator, get_on_demand_simulator_names

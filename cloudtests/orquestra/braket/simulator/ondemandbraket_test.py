@@ -1,7 +1,7 @@
 ################################################################################
 # © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
-import numpy as np
+
 import pytest
 from boto3 import Session  # type: ignore
 from braket.circuits.noise import Noise
@@ -47,7 +47,7 @@ def noisy_simulator():
     return BraketOnDemandSimulator("dm1", boto_session, noise_model=noise_model)
 
 
-class TestBraketLocalSimulator(QuantumSimulatorTests):
+class TestBraketOnDemandSimulator(QuantumSimulatorTests):
     def test_run_circuit_and_measure(self, backend):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)])
