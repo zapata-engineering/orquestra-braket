@@ -14,7 +14,7 @@ To install it, make to install `orquestra-quantum` first. Then you just need to 
 `orquestra-braket` is a Python module that exposes Braket's local simulators as an [`orquestra`](https://github.com/zapatacomputing/orquestra-quantum/blob/main/src/orquestra/quantum/api/backend.py) `QuantumSimulator`. It can be imported with:
 
 ```
-from orquestra.itegrations.braket.simulator import BraketLocalSimulator
+from orquestra.integrations.braket.simulator import BraketLocalSimulator
 ```
 
 In addition, it interfaces with the noise models and provides converters that allow switching between `braket` circuits and those of `orquestra`.
