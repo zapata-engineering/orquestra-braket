@@ -123,7 +123,7 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
         noise_model = Noise.Depolarizing(probability=noise)
         simulator = BraketLocalSimulator(noise_model=noise_model)
         circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
-        qubit_operator = PauliTerm({0: "X", 2: "X"}) - PauliTerm({0: "Z", 1: "Z"})
+        qubit_operator = PauliTerm({0: "Z", 1: "Z"}, -1) + PauliTerm({0: "X", 2: "X"})
         target_values = np.array([-0.9986673775881747, 0.0])
 
         expectation_values = simulator.get_exact_noisy_expectation_values(
