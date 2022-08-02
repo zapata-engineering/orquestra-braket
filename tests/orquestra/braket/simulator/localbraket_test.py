@@ -8,11 +8,8 @@ from orquestra.quantum.api.backend_test import (
     QuantumSimulatorGatesTest,
     QuantumSimulatorTests,
 )
-from orquestra.quantum.api.estimation import EstimationTask
 from orquestra.quantum.circuits import CNOT, Circuit, H, X
-from orquestra.quantum.estimation import estimate_expectation_values_by_averaging
-from orquestra.quantum.measurements import ExpectationValues
-from orquestra.quantum.openfermion.ops import QubitOperator
+from orquestra.quantum.wip.operators import PauliTerm
 
 from orquestra.integrations.braket.simulator import BraketLocalSimulator
 
@@ -105,7 +102,11 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
         # Given
         simulator = BraketLocalSimulator()
         circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
-        qubit_operator = QubitOperator("2[] - [Z0 Z1] + [X0 X2]")
+        qubit_operator = (
+            PauliTerm.identity * 2
+            - PauliTerm({0: "Z", 1: "Z"})
+            + PauliTerm({0: "X", 2: "X"})
+        )
         target_values = np.array([2.0, -1.0, 0.0])
 
         # When
@@ -122,7 +123,7 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
         noise_model = Noise.Depolarizing(probability=noise)
         simulator = BraketLocalSimulator(noise_model=noise_model)
         circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
-        qubit_operator = QubitOperator("-[Z0 Z1] + [X0 X2]")
+        qubit_operator = PauliTerm({0: "X", 2: "X"}) - PauliTerm({0: "Z", 1: "Z"})
         target_values = np.array([-0.9986673775881747, 0.0])
 
         expectation_values = simulator.get_exact_noisy_expectation_values(
