@@ -31,8 +31,6 @@ In order to use Braket's `on-demand simulator`, a `boto.Session` must be created
 
 ```
 from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
-
-from braket.aws import AwsSession, AwsDevice
 from boto3 import Session
 
 # Insert CLI profile name here

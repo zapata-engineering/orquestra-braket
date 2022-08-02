@@ -43,8 +43,8 @@ class BraketOnDemandSimulator:
         """
         aws_session = AwsSession(boto_session)
 
-        simulators_provided = get_on_demand_simulator_names(aws_session)
-        if simulator not in simulators_provided:
+        simulators_supported = get_on_demand_simulator_names(aws_session)
+        if simulator_string not in simulators_supported:
             raise ValueError(
                 "The simulator provided is not a Braket Simulator"
                 "Please visit https://aws.amazon.com/braket/quantum-computers/"

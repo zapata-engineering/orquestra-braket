@@ -13,19 +13,23 @@ from orquestra.quantum.wip.operators import PauliTerm
 
 from orquestra.integrations.braket.simulator import BraketLocalSimulator
 
+# @pytest.fixture(
+#     params=[
+#         {
+#             "noise_model": None,
+#         },
+#         {
+#             "noise_model": Noise.Depolarizing(probability=0.0),
+#         },
+#     ]
+# )
+# def backend(request):
+#     return BraketLocalSimulator(**request.param)
 
-@pytest.fixture(
-    params=[
-        {
-            "noise_model": None,
-        },
-        {
-            "noise_model": Noise.Depolarizing(probability=0.0),
-        },
-    ]
-)
-def backend(request):
-    return BraketLocalSimulator(**request.param)
+
+@pytest.fixture()
+def backend():
+    return BraketLocalSimulator()
 
 
 @pytest.fixture()
@@ -169,4 +173,3 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
 class TestBraketLocalSimulatorGates(QuantumSimulatorGatesTest):
     atol_wavefunction = 1e-8
     gates_to_exclude = ["RH"]
-    pass
