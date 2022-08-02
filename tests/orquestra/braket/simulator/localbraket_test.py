@@ -103,7 +103,7 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
         simulator = BraketLocalSimulator()
         circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
         qubit_operator = (
-            PauliTerm.identity * 2
+            PauliTerm.identity() * 2
             - PauliTerm({0: "Z", 1: "Z"})
             + PauliTerm({0: "X", 2: "X"})
         )
