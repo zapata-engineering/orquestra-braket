@@ -16,22 +16,22 @@ boto_session = Session(profile_name="AWSBraketFullAccess", region_name="us-east-
 @pytest.fixture(
     params=[
         {
-            "simulator": "SV1",
+            "simulator_string": "SV1",
             "boto_session": boto_session,
             "noise_model": None,
         },
         {
-            "simulator": "TN1",
+            "simulator_string": "TN1",
             "boto_session": boto_session,
             "noise_model": None,
         },
         {
-            "simulator": "dm1",
+            "simulator_string": "dm1",
             "boto_session": boto_session,
             "noise_model": None,
         },
         {
-            "simulator": "dm1",
+            "simulator_string": "dm1",
             "boto_session": boto_session,
             "noise_model": Noise.Depolarizing(probability=0.0),
         },
@@ -47,6 +47,7 @@ def noisy_simulator():
     return BraketOnDemandSimulator("dm1", boto_session, noise_model=noise_model)
 
 
+@pytest.mark.cloud
 class TestBraketOnDemandSimulator(QuantumSimulatorTests):
     def test_run_circuit_and_measure(self, backend):
         # Given
