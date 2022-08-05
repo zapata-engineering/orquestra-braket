@@ -79,22 +79,6 @@ isort-default: clean
 test-default:
 	$(PYTHON) -m pytest tests
 
-coverage-default:
-	$(PYTHON) -m pytest -m "not cloud" \
-		--cov=src \
-		--cov-fail-under=$(MIN_COVERAGE) tests\
-		--no-cov-on-fail \
-		--cov-report xml \
-		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!
-
-cloudcoverage-default:
-	$(PYTHON) -m pytest -m cloud \
-		--cov=src \
-		--cov-fail-under=$(MIN_COVERAGE) tests \
-		--no-cov-on-fail \
-		--cov-report xml \
-		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!
-	
 
 
 style-default: flake8 mypy black isort

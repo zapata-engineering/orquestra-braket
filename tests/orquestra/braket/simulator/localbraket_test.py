@@ -13,23 +13,19 @@ from orquestra.quantum.wip.operators import PauliTerm
 
 from orquestra.integrations.braket.simulator import BraketLocalSimulator
 
-# @pytest.fixture(
-#     params=[
-#         {
-#             "noise_model": None,
-#         },
-#         {
-#             "noise_model": Noise.Depolarizing(probability=0.0),
-#         },
-#     ]
-# )
-# def backend(request):
-#     return BraketLocalSimulator(**request.param)
 
-
-@pytest.fixture()
-def backend():
-    return BraketLocalSimulator()
+@pytest.fixture(
+    params=[
+        {
+            "noise_model": None,
+        },
+        {
+            "noise_model": Noise.Depolarizing(probability=0.0),
+        },
+    ]
+)
+def backend(request):
+    return BraketLocalSimulator(**request.param)
 
 
 @pytest.fixture()
