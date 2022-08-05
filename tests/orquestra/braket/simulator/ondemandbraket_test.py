@@ -10,7 +10,10 @@ from orquestra.quantum.circuits import CNOT, Circuit, X
 
 from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
 
-boto_session = Session(profile_name="AWSBraketFullAccess", region_name="us-east-1")
+try:
+    boto_session = Session(profile_name="AWSBraketFullAccess1", region_name="us-east-1")
+except ValueError:
+    boto_session = None
 
 
 @pytest.fixture(
