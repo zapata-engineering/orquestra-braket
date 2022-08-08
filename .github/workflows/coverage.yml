@@ -37,4 +37,4 @@ jobs:
 
       - uses: ./subtrees/z_quantum_actions/actions/coverage
         env:
-          SESSION_TYPE: Mock
+          SESSION_TYPE: mock
