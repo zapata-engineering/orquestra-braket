@@ -87,6 +87,7 @@ coverage-default:
 		--cov-report xml \
 		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!
 
+
 style-default: flake8 mypy black isort
 	@echo This project passes style!
 
