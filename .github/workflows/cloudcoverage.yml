@@ -29,3 +29,5 @@ jobs:
           path: orquestra-quantum
 
       - uses: ./cloudcoverage
+        env:
+          SESSION_TYPE: Braket
