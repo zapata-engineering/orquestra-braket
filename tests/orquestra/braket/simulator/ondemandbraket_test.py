@@ -2,6 +2,9 @@
 # © Copyright 2021-2022 Zapata Computing Inc.
 ################################################################################
 
+import os
+from unittest.mock import Mock
+
 import pytest
 from boto3 import Session  # type: ignore
 from braket.circuits.noise import Noise
@@ -10,10 +13,13 @@ from orquestra.quantum.circuits import CNOT, Circuit, X
 
 from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
 
-try:
-    boto_session = Session(profile_name="AWSBraketFullAccess1", region_name="us-east-1")
-except ValueError:
-    boto_session = None
+boto_session_type = os.environ["SESSION_TYPE"]
+
+
+if boto_session_type == "Mock":
+    boto_session = Mock(spec=Session)
+else:
+    boto_session = Session(profile_name="AWSBraketFullAccess", region_name="us-east-1")
 
 
 @pytest.fixture(

@@ -36,3 +36,5 @@ jobs:
           path: orquestra-quantum
 
       - uses: ./subtrees/z_quantum_actions/actions/coverage
+        env:
+          SESSION_TYPE: Mock
