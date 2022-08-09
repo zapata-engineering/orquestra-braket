@@ -20,5 +20,10 @@ jobs:
           # version.
           fetch-depth: 0
 
+      - name: run cloud tests
+        uses: ./cloudcoverage
+        env:
+          SESSION_TYPE: Cloud
+
       - name: Run publish release action
         uses: ./subtrees/z_quantum_actions/actions/publish-release

@@ -30,7 +30,9 @@ module = [
 ignore_missing_imports = true
 
 [tool.coverage.run]
-omit = ["*/__init__.py"]
+omit = ["*/__init__.py", 
+        "*/OnDemandSimulator.py",
+        ]
 
 [tool.coverage.report]
 exclude_lines = [

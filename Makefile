@@ -5,3 +5,20 @@ github_actions:
 		my_little_venv/bin/python3 -m pip install --upgrade pip && \
 		my_little_venv/bin/python3 -m pip install -e orquestra-quantum && \
 		my_little_venv/bin/python3 -m pip install -e '.[dev]'
+
+
+ondemandcoverage:
+	$(PYTHON) -m pytest -m cloud \
+		--cov=src \
+		--cov-fail-under=$(MIN_COVERAGE) tests\
+		--no-cov-on-fail \
+		--cov-report xml \
+		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!
+	
+coverage:
+	$(PYTHON) -m pytest -m "not cloud" \
+		--cov=src \
+		--cov-fail-under=$(MIN_COVERAGE) tests\
+		--no-cov-on-fail \
+		--cov-report xml \
+		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!

@@ -169,4 +169,3 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
 class TestBraketLocalSimulatorGates(QuantumSimulatorGatesTest):
     atol_wavefunction = 1e-8
     gates_to_exclude = ["RH"]
-    pass

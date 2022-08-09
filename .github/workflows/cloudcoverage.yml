@@ -1,22 +1,15 @@
 # This workflow runs tests and reports code coverage.
 
 # We need a workflow name to be able to schedule it from Github UI
-name: TestCoverage
+name: CloudTestCoverage
 
 on:
-  # Triggers the workflow on push to main
-  push:
-    branches:
-      - main
-  # Triggers the workflow on any PR
-  pull_request:
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   # The job ID has to match repo settings for PR required checks
-  TestCoverage:
+  CloudTestCoverage:
     runs-on: ubuntu-latest
 
     # Run jobs for a couple of Python versions.
@@ -24,7 +17,7 @@ jobs:
       matrix:
         python: ["3.8", "3.9", "3.10"]
 
-    name: TestCoverage - Python ${{ matrix.python }}
+    name: CloudTestCoverage - Python ${{ matrix.python }}
 
     steps:
       - uses: actions/checkout@v2
@@ -35,6 +28,6 @@ jobs:
           repository: zapatacomputing/orquestra-quantum
           path: orquestra-quantum
 
-      - uses: ./subtrees/z_quantum_actions/actions/coverage
+      - uses: ./cloudcoverage
         env:
-          SESSION_TYPE: mock
+          SESSION_TYPE: Braket
