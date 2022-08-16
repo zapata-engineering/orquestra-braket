@@ -37,7 +37,7 @@ from boto3 import Session
 boto_session = Session(profile_name=`profile`, region_name='us-east-1')
 simulator_name = "SV1"
 noise_model = None
-simulator = BraketOnDemandSimulator(simulator_name, boto_session, noise_model)
+simulator = BraketOnDemandSimulator(boto_session, simulator_name, noise_model)
 
 ```
 
