@@ -11,7 +11,7 @@ from orquestra.quantum.measurements import (
     Measurements,
     expectation_values_to_real,
 )
-from orquestra.quantum.openfermion import SymbolicOperator, get_sparse_operator
+from orquestra.quantum.operators import PauliRepresentation, get_sparse_operator
 
 from ..conversions import export_to_braket
 from ._base import _run_circuit_and_measure
@@ -88,20 +88,21 @@ class BraketLocalSimulator(QuantumSimulator):
         return np.array(result.values[0], np.complex64)
 
     def get_exact_noisy_expectation_values(
-        self, circuit: Circuit, qubit_operator: SymbolicOperator
+        self, circuit: Circuit, qubit_operator: PauliRepresentation
     ) -> ExpectationValues:
-        """Compute exact expectation values w.r.t. given operator in presence of noise.
+        """Compute exact expectation values w.r.t. given operator in presence of
+        noise.
 
         Note that this method can be used only if simulator's noise_model is not set
-        to None.
+            to None.
 
-        Args:
-            circuit: the circuit to prepare the state
-            qubit_operator: the operator to measure
-        Returns:
-            the expectation values of each term in the operator
-        Raises:
-            RuntimeError if this simulator's noise_model is None.
+            Args:
+                circuit: the circuit to prepare the state
+                qubit_operator: the operator to measure
+            Returns:
+                the expectation values of each term in the operator
+            Raises:
+                RuntimeError if this simulator's noise_model is None.
         """
         if self.noise_model is None:
             raise RuntimeError(
@@ -111,7 +112,8 @@ class BraketLocalSimulator(QuantumSimulator):
         braket_circuit = export_to_braket(circuit)
         values = []
 
-        for pauli_term in qubit_operator:
+        for pauli_term in qubit_operator.terms:
+
             sparse_pauli_term_ndarray = get_sparse_operator(
                 pauli_term, n_qubits=circuit.n_qubits
             ).toarray()
