@@ -8,7 +8,7 @@ import numpy as np
 from braket.aws import AwsDevice
 from orquestra.quantum.circuits import Circuit
 from orquestra.quantum.measurements import Measurements
-from orquestra.quantum.openfermion import get_sparse_operator
+from orquestra.quantum.operators import get_sparse_operator
 
 from ..conversions import export_to_braket
 
