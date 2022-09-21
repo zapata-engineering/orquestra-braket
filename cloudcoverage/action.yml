@@ -1,70 +1,35 @@
-# This workflow runs tests and reports code coverage.
-
-# We need a workflow name to be able to schedule it from Github UI
-name: RunBraketTests
-
 inputs:
   codecov_secret:
     description: |
       Should be copy of secrets.CODECOV_TOKEN from calling environment.
     required: true
 
-on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
-jobs:
-  # The job ID has to match repo settings for PR required checks
-  TestCoverage:
-    runs-on: ubuntu-latest
+runs:
+  using: "composite"
+  steps:
+    # Load a specific version of Python
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+        architecture: x64
 
-    # Run jobs for a couple of Python versions.
-    strategy:
-      matrix:
-        python: ["3.8", "3.9", "3.10"]
+    - name: Install deps
+      shell: bash
+      run: make github_actions
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-    name: On-demand simulator - TestCoverage - Python ${{ matrix.python }}
+    - name: Run test coverage
+      shell: bash
+      run: |
+        make ondemandcoverage
 
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Get orquestra-quantum
-        uses: actions/checkout@v2
-        with:
-          repository: zapatacomputing/orquestra-quantum
-          path: orquestra-quantum
-
-  runs:
-    using: "composite"
-    steps:
-      # Load a specific version of Python
-      - name: Setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-          architecture: x64
-
-      - name: Install deps
-        shell: bash
-        run: make github_actions
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-
-      - name: Run test coverage
-        shell: bash
-        run: |
-          make ondemandcoverage
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-          SESSION_TYPE: Cloud
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        env:
-          CODECOV_TOKEN: ${{ inputs.codecov_secret }}
-        with:
-          files: ./.coverage,./coverage.xml
-          fail_ci_if_error: trueyml
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      env:
+        CODECOV_TOKEN: ${{ inputs.codecov_secret }}
+      with:
+        files: ./.coverage,./coverage.xml
+        fail_ci_if_error: trueyml
