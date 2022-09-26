@@ -14,11 +14,11 @@ from orquestra.quantum.circuits import CNOT, Circuit, X
 from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
 
 boto_session_type = os.environ["SESSION_TYPE"]
-region_name = os.environ["AWS_DEFAULT_REGION"]
 
 if boto_session_type == "mock":
     boto_session = Mock(spec=Session)
 else:
+    region_name = os.environ["AWS_DEFAULT_REGION"]
     boto_session = Session(region_name=region_name)
 
 
