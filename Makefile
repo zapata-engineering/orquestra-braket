@@ -17,9 +17,17 @@ ondemandcoverage:
 		--no-cov-on-fail \
 		--cov-report xml \
 		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!
-	
+
 coverage:
-	$(PYTHON) -m pytest -m "not cloud" \
+	$(PYTHON) -m pytest -m local \
+		--cov=src \
+		--cov-fail-under=$(MIN_COVERAGE) tests\
+		--no-cov-on-fail \
+		--cov-report xml \
+		&& echo Code coverage Passed the $(MIN_COVERAGE)% mark!
+
+totalcoverage:
+	$(PYTHON) -m pytest -m "local or cloud"\
 		--cov=src \
 		--cov-fail-under=$(MIN_COVERAGE) tests\
 		--no-cov-on-fail \
