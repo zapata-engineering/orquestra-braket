@@ -21,10 +21,13 @@ runs:
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-    - name: Run test coverage
-      shell: bash
-      run: |
-        make ondemandcoverage
+    - if: ${{env.coverage_type == 'ondemand' }}
+      name: Run on-demand coverage
+      run: make ondemandcoverage
+
+    - if: ${{ env.coverage_type == 'totalcoverage'}}
+      name: Run total coverage
+      run: make totalcoverage
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2

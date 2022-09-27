@@ -39,6 +39,7 @@ def noisy_simulator():
     return BraketLocalSimulator(noise_model=noise_model)
 
 
+@pytest.mark.local
 class TestBraketLocalSimulator(QuantumSimulatorTests):
     def test_setup_basic_simulators(self, wf_simulator):
         assert isinstance(wf_simulator, BraketLocalSimulator)
@@ -166,6 +167,7 @@ class TestBraketLocalSimulator(QuantumSimulatorTests):
         pytest.xfail("Braket simulator only accepts zero state as initial state")
 
 
+@pytest.mark.local
 class TestBraketLocalSimulatorGates(QuantumSimulatorGatesTest):
     atol_wavefunction = 1e-8
     gates_to_exclude = ["RH"]
