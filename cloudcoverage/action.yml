@@ -22,10 +22,12 @@ runs:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
     - if: ${{env.coverage_type == 'ondemand' }}
+      shell: bash
       name: Run on-demand coverage
       run: make ondemandcoverage
 
     - if: ${{ env.coverage_type == 'totalcoverage'}}
+      shell: bash
       name: Run total coverage
       run: make totalcoverage
 
