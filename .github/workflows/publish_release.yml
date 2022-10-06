@@ -20,6 +20,12 @@ jobs:
           # version.
           fetch-depth: 0
 
+      - name: Get orquestra-quantum
+        uses: actions/checkout@v2
+        with:
+          repository: zapatacomputing/orquestra-quantum
+          path: orquestra-quantum
+
       - name: run tests
         uses: ./cloudcoverage
         env:
