@@ -91,7 +91,7 @@ class BraketOnDemandSimulator(BaseCircuitRunner):
             Probability distribution of getting specific bistrings.
         """
         # Get the expectation values
-        measurements = self.run_circuit_and_measure(circuit, n_samples)
+        measurements = self.run_and_measure(circuit, n_samples)
         return measurements.get_distribution()
 
 
