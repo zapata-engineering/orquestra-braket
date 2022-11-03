@@ -4,20 +4,16 @@
 
 import numpy as np
 from braket.devices import LocalSimulator
-from orquestra.quantum.api.backend import QuantumSimulator, StateVector
-from orquestra.quantum.circuits import Circuit
-from orquestra.quantum.measurements import (
-    ExpectationValues,
-    Measurements,
-    expectation_values_to_real,
-)
+from orquestra.quantum.api import BaseWavefunctionSimulator
+from orquestra.quantum.circuits import Circuit, Operation
+from orquestra.quantum.measurements import ExpectationValues, expectation_values_to_real
 from orquestra.quantum.operators import PauliRepresentation, get_sparse_operator
+from orquestra.quantum.typing import StateVector
 
 from ..conversions import export_to_braket
-from ._base import _run_circuit_and_measure
 
 
-class BraketLocalSimulator(QuantumSimulator):
+class BraketLocalSimulator(BaseWavefunctionSimulator):
     """Simulator using Braket's LocalSimulator.
     Args:
         noise_model: an optional noise model to pass in for noisy simulations
@@ -46,14 +42,6 @@ class BraketLocalSimulator(QuantumSimulator):
         self.batch_size = 0
         self.number_of_jobs_run = 0
         self.number_of_circuits_run = 0
-
-    def run_circuit_and_measure(self, circuit: Circuit, n_samples: int) -> Measurements:
-        if n_samples < 1:
-            raise ValueError("Must sample given circuit at least once.")
-        self.number_of_circuits_run += 1
-        self.number_of_jobs_run += 1
-
-        return _run_circuit_and_measure(self, circuit, n_samples)
 
     def _get_wavefunction_from_native_circuit(
         self,
@@ -130,4 +118,8 @@ class BraketLocalSimulator(QuantumSimulator):
                 rho = result_object.values[0]
                 expectation_value = np.real(np.trace(rho @ sparse_pauli_term_ndarray))
                 values.append(expectation_value)
+
         return expectation_values_to_real(ExpectationValues(np.asarray(values)))
+
+    def is_natively_supported(self, operation: Operation) -> bool:
+        return True

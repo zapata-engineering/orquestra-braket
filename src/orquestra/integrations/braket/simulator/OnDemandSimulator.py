@@ -5,15 +5,17 @@
 from boto3 import Session  # type: ignore
 from braket.aws import AwsDevice
 from braket.aws.aws_session import AwsSession
-from orquestra.quantum.api.backend import QuantumSimulator
+from orquestra.quantum.api import BaseCircuitRunner
 from orquestra.quantum.circuits import Circuit
 from orquestra.quantum.distributions import MeasurementOutcomeDistribution
 from orquestra.quantum.measurements import Measurements
 
-from ._base import _get_arn, _run_circuit_and_measure
+from orquestra.integrations.braket.conversions import export_to_braket
+
+from ._utils import _get_arn
 
 
-class BraketOnDemandSimulator:
+class BraketOnDemandSimulator(BaseCircuitRunner):
     supports_batching = False
 
     def __init__(
@@ -58,10 +60,10 @@ class BraketOnDemandSimulator:
         self.is_natively_supported = None
 
         self.batch_size = 0
-        self.number_of_jobs_run = 0
-        self.number_of_circuits_run = 0
+        self._n_circuits_executed = 0
+        self._n_jobs_executed = 0
 
-    def run_circuit_and_measure(self, circuit: Circuit, n_samples: int) -> Measurements:
+    def _run_and_measure(self, circuit: Circuit, n_samples: int) -> Measurements:
 
         """Run a circuit and measure a certain number of bitstrings.
         Args:
@@ -72,15 +74,11 @@ class BraketOnDemandSimulator:
             A list of bitstrings.
         """
 
-        if n_samples < 1:
-            raise ValueError("Must sample given circuit at least once.")
-        self.number_of_circuits_run += 1
-        self.number_of_jobs_run += 1
+        braket_circuit = export_to_braket(circuit)
 
-        return _run_circuit_and_measure(self, circuit, n_samples)
+        result_object = self.simulator.run(braket_circuit, shots=n_samples).result()
 
-    def run_circuitset_and_measure(self, circuits, n_samples):
-        return QuantumSimulator.run_circuitset_and_measure(self, circuits, n_samples)
+        return _get_measurement_from_braket_result_object(result_object)
 
     def get_measurement_outcome_distribution(
         self, circuit: Circuit, n_samples: int
@@ -109,3 +107,18 @@ def get_on_demand_simulator_names(aws_session):
     """
     simulators = AwsDevice.get_devices(types=["SIMULATOR"], aws_session=aws_session)
     return [braket_simulator.name for braket_simulator in simulators]
+
+
+def _get_measurement_from_braket_result_object(result_object) -> Measurements:
+    """Extract measurement bitstrings from braket result object.
+    Args:
+        result_object: object returned by braket simulator's run or run_batch.
+    Return:
+        Measurements.
+    """
+    samples = [
+        tuple(key for key in numpy_bitstring)
+        for numpy_bitstring in result_object.measurements
+    ]
+
+    return Measurements(samples)

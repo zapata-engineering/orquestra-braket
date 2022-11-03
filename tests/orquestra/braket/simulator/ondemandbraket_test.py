@@ -8,7 +8,6 @@ from unittest.mock import Mock
 import pytest
 from boto3 import Session  # type: ignore
 from braket.circuits.noise import Noise
-from orquestra.quantum.api.backend_test import QuantumSimulatorTests
 from orquestra.quantum.circuits import CNOT, Circuit, X
 
 from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
@@ -57,11 +56,11 @@ def noisy_simulator():
 
 
 @pytest.mark.cloud
-class TestBraketOnDemandSimulator(QuantumSimulatorTests):
-    def test_run_circuit_and_measure(self, backend):
+class TestBraketOnDemandSimulator:
+    def test_run_and_measure(self, backend):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)])
-        measurements = backend.run_circuit_and_measure(circuit, n_samples=100)
+        measurements = backend.run_and_measure(circuit, n_samples=100)
         assert len(measurements.bitstrings) == 100
 
         for measurement in measurements.bitstrings:
@@ -70,19 +69,19 @@ class TestBraketOnDemandSimulator(QuantumSimulatorTests):
     def test_measuring_inactive_qubits(self, backend):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)], n_qubits=4)
-        measurements = backend.run_circuit_and_measure(circuit, n_samples=100)
+        measurements = backend.run_and_measure(circuit, n_samples=100)
         assert len(measurements.bitstrings) == 100
 
         for measurement in measurements.bitstrings:
             assert measurement == (1, 0, 0, 0)
 
-    def test_run_circuitset_and_measure(self, backend):
+    def test_run_batch_and_measure(self, backend):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)])
         n_circuits = 5
         n_samples = 100
         # When
-        measurements_set = backend.run_circuitset_and_measure(
+        measurements_set = backend.run_batch_and_measure(
             [circuit] * n_circuits, n_samples=[100] * n_circuits
         )
         # Then
@@ -92,15 +91,15 @@ class TestBraketOnDemandSimulator(QuantumSimulatorTests):
             for measurement in measurements.bitstrings:
                 assert measurement == (1, 0, 0)
 
-    def test_run_circuit_and_measure_seed(self, backend):
+    def test_run_and_measure_seed(self, backend):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)])
         simulator1 = backend
         simulator2 = backend
 
         # When
-        measurements1 = simulator1.run_circuit_and_measure(circuit, n_samples=1000)
-        measurements2 = simulator2.run_circuit_and_measure(circuit, n_samples=1000)
+        measurements1 = simulator1.run_and_measure(circuit, n_samples=1000)
+        measurements2 = simulator2.run_and_measure(circuit, n_samples=1000)
 
         # Then
         for (meas1, meas2) in zip(measurements1.bitstrings, measurements2.bitstrings):
