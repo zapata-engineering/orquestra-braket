@@ -10,7 +10,7 @@ from orquestra.quantum.circuits import Circuit
 from orquestra.quantum.measurements import Measurements
 
 from orquestra.integrations.braket.conversions import export_to_braket
-from orquestra.integrations.braket.simulator._base import _get_arn
+from orquestra.integrations.braket.simulator._utils import _get_arn
 
 
 class BraketBackend:
@@ -50,7 +50,7 @@ class BraketBackend:
 
         self.QPU = AwsDevice(_get_arn(QPU_name, aws_session))
 
-    def run_circuit_and_measure(
+    def run_and_measure(
         self,
         circuit: Circuit,
         n_samples: int,
@@ -90,7 +90,7 @@ class BraketBackend:
 
         return QPU_task
 
-    def run_circuit_batch_and_measure(
+    def run_batch_and_measure(
         self,
         circuitset: Sequence[Circuit],
         n_samples: int,

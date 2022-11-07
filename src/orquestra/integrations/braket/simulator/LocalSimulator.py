@@ -5,7 +5,7 @@
 import numpy as np
 from braket.devices import LocalSimulator
 from orquestra.quantum.api import BaseWavefunctionSimulator
-from orquestra.quantum.circuits import Circuit, Operation
+from orquestra.quantum.circuits import Circuit, GateOperation, Operation
 from orquestra.quantum.measurements import ExpectationValues, expectation_values_to_real
 from orquestra.quantum.operators import PauliRepresentation, get_sparse_operator
 from orquestra.quantum.typing import StateVector
@@ -122,4 +122,4 @@ class BraketLocalSimulator(BaseWavefunctionSimulator):
         return expectation_values_to_real(ExpectationValues(np.asarray(values)))
 
     def is_natively_supported(self, operation: Operation) -> bool:
-        return True
+        return isinstance(operation, GateOperation)

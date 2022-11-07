@@ -76,7 +76,7 @@ QPU_names = get_QPU_names(aws_session)
 After setting up the QPU, you can use the following approach to send a task to a QPU.
 
 ```
-QPU_task = backend.run_circuit_and_measure(circ, n_samples)
+QPU_task = backend.run_and_measure(circ, n_samples)
 ```
 
 Since the quantum devices are not readily accessible, the results are not returned immediately. We can monitor the status of our task by `QPU_task.state()`. You can cancel the task by `QPU.cancel()`.
