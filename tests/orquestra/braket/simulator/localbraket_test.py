@@ -4,6 +4,7 @@
 import numpy as np
 import pytest
 from braket.circuits.noise import Noise
+from orquestra.quantum.api.circuit_runner_contracts import CIRCUIT_RUNNER_CONTRACTS
 from orquestra.quantum.circuits import CNOT, Circuit, H, X
 from orquestra.quantum.operators import PauliTerm
 
@@ -20,7 +21,7 @@ from orquestra.integrations.braket.simulator import BraketLocalSimulator
         },
     ]
 )
-def backend(request):
+def runner(request):
     return BraketLocalSimulator(**request.param)
 
 
@@ -142,3 +143,8 @@ class TestBraketLocalSimulator:
 
     def test_get_wavefunction_uses_provided_initial_state(self, wf_simulator):
         pytest.xfail("Braket simulator only accepts zero state as initial state")
+
+
+@pytest.mark.parametrize("contract", CIRCUIT_RUNNER_CONTRACTS)
+def test_braket_local_runner_fulfills_circuit_runner_contracts(runner, contract):
+    assert contract(runner)
