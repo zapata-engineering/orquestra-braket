@@ -14,8 +14,8 @@ To install it, make to install `orquestra-quantum` first. Then you just need to 
 `orquestra-braket` is a Python module that exposes Braket's local and on-demand simulators as an [`orquestra`](https://github.com/zapatacomputing/orquestra-quantum/blob/main/src/orquestra/quantum/api/backend.py) `QuantumSimulator`. They can be imported with:
 
 ```
-from orquestra.integrations.braket.simulator import BraketLocalSimulator
-from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
+from orquestra.integrations.braket.runner import BraketLocalSimulator
+from orquestra.integrations.braket.runner import BraketOnDemandSimulator
 ```
 
 In addition, it interfaces with the noise models and provides converters that allow switching between `braket` circuits and those of `orquestra`.
@@ -30,7 +30,7 @@ For more information regarding Orquestra and resources, please refer to the [Orq
 In order to use Braket's `on-demand simulator`, a `boto.Session` must be created using AWS credentials. See [Boto Session](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html) for information on creating creating a session. It highly recommended that credentials are configured in the local [AWS CLI profile](https://docs.aws.amazon.com/braket/latest/developerguide/braket-using-boto3-profiles-step-2.html). Following is an example of working with `BraketOnDemandSimulator` using credentials stored in AWS CLI profile:
 
 ```
-from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
+from orquestra.integrations.braket.runner import BraketOnDemandSimulator
 from boto3 import Session
 
 # Insert CLI profile name here
@@ -62,7 +62,7 @@ This library will allow you to access the QPUs provided by AWS Braket. The proce
 from orquestra.integrations.braket.backend import BraketBackend
 
 QPU_name = "IonQ Device"
-backend = BraketBackend(boto_session, QPU_name)
+backend = BraketQPURunner(boto_session, QPU_name)
 ```
 
 If you want to find the list of QPU names provided by Braket, use the following method:

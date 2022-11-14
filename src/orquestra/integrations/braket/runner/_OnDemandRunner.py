@@ -15,7 +15,7 @@ from orquestra.integrations.braket.conversions import export_to_braket
 from ._utils import _get_arn
 
 
-class BraketOnDemandRunner(BaseCircuitRunner):
+class BraketOnDemandSimulator(BaseCircuitRunner):
     supports_batching = False
 
     def __init__(

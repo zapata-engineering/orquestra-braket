@@ -17,7 +17,7 @@ from orquestra.quantum.api.wavefunction_simulator_contracts import (
 )
 from orquestra.quantum.circuits import CNOT, Circuit, X
 
-from orquestra.integrations.braket.runner import BraketOnDemandRunner
+from orquestra.integrations.braket.runner import BraketOnDemandSimulator
 
 boto_session_type = os.environ["SESSION_TYPE"]
 
@@ -53,13 +53,13 @@ else:
     ]
 )
 def runner(request):
-    return BraketOnDemandRunner(**request.param)
+    return BraketOnDemandSimulator(**request.param)
 
 
 @pytest.fixture()
 def noisy_simulator():
     noise_model = Noise.Depolarizing(probability=0.0002)
-    return BraketOnDemandRunner("dm1", boto_session, noise_model=noise_model)
+    return BraketOnDemandSimulator("dm1", boto_session, noise_model=noise_model)
 
 
 @pytest.mark.cloud

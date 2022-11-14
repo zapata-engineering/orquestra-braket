@@ -3,12 +3,12 @@
 ################################################################################
 
 try:
-    from ._LocalRunner import BraketLocalWaveFunctionsSimulator
+    from ._LocalRunner import BraketLocalSimulator
 except ModuleNotFoundError:
     pass
 
 try:
-    from ._OnDemandRunner import BraketOnDemandRunner, get_on_demand_simulator_names
+    from ._OnDemandRunner import BraketOnDemandSimulator, get_on_demand_simulator_names
 except ModuleNotFoundError:
     pass
 
