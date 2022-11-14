@@ -13,7 +13,7 @@ from orquestra.quantum.typing import StateVector
 from ..conversions import export_to_braket
 
 
-class BraketLocalSimulator(BaseWavefunctionSimulator):
+class BraketLocalWaveFunctionsSimulator(BaseWavefunctionSimulator):
     """Simulator using Braket's LocalSimulator.
     Args:
         noise_model: an optional noise model to pass in for noisy simulations

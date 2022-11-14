@@ -15,7 +15,7 @@ from orquestra.integrations.braket.conversions import export_to_braket
 from ._utils import _get_arn
 
 
-class BraketOnDemandSimulator(BaseCircuitRunner):
+class BraketOnDemandRunner(BaseCircuitRunner):
     supports_batching = False
 
     def __init__(
@@ -79,20 +79,6 @@ class BraketOnDemandSimulator(BaseCircuitRunner):
         result_object = self.simulator.run(braket_circuit, shots=n_samples).result()
 
         return _get_measurement_from_braket_result_object(result_object)
-
-    def get_measurement_outcome_distribution(
-        self, circuit: Circuit, n_samples: int
-    ) -> MeasurementOutcomeDistribution:
-        """Calculates a measurement outcome distribution.
-        Args:
-            circuit: quantum circuit to be executed.
-            n_samples: number of samples to collect
-        Returns:
-            Probability distribution of getting specific bistrings.
-        """
-        # Get the expectation values
-        measurements = self.run_and_measure(circuit, n_samples)
-        return measurements.get_distribution()
 
 
 def get_on_demand_simulator_names(aws_session):

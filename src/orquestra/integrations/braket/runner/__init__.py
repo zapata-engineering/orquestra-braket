@@ -3,14 +3,16 @@
 ################################################################################
 
 try:
-    from .LocalSimulator import BraketLocalSimulator
+    from ._LocalRunner import BraketLocalWaveFunctionsSimulator
 except ModuleNotFoundError:
     pass
 
 try:
-    from .OnDemandSimulator import (
-        BraketOnDemandSimulator,
-        get_on_demand_simulator_names,
-    )
+    from ._OnDemandRunner import BraketOnDemandRunner, get_on_demand_simulator_names
+except ModuleNotFoundError:
+    pass
+
+try:
+    from ._qpuRunner import BraketQPURunner
 except ModuleNotFoundError:
     pass

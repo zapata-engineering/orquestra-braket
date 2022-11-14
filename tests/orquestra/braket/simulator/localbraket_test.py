@@ -4,11 +4,17 @@
 import numpy as np
 import pytest
 from braket.circuits.noise import Noise
-from orquestra.quantum.api.circuit_runner_contracts import CIRCUIT_RUNNER_CONTRACTS
+from orquestra.quantum.api.circuit_runner_contracts import (
+    CIRCUIT_RUNNER_CONTRACTS,
+    STRICT_CIRCUIT_RUNNER_CONTRACTS,
+)
+from orquestra.quantum.api.wavefunction_simulator_contracts import (
+    simulator_contracts_for_tolerance,
+)
 from orquestra.quantum.circuits import CNOT, Circuit, H, X
 from orquestra.quantum.operators import PauliTerm
 
-from orquestra.integrations.braket.simulator import BraketLocalSimulator
+from orquestra.integrations.braket.runner import BraketLocalWaveFunctionsSimulator
 
 
 @pytest.fixture(
@@ -22,30 +28,30 @@ from orquestra.integrations.braket.simulator import BraketLocalSimulator
     ]
 )
 def runner(request):
-    return BraketLocalSimulator(**request.param)
+    return BraketLocalWaveFunctionsSimulator(**request.param)
 
 
 @pytest.fixture()
 def wf_simulator():
-    return BraketLocalSimulator()
+    return BraketLocalWaveFunctionsSimulator()
 
 
 @pytest.fixture()
 def noisy_simulator():
     noise_model = Noise.Depolarizing(probability=0.0002)
-    return BraketLocalSimulator(noise_model=noise_model)
+    return BraketLocalWaveFunctionsSimulator(noise_model=noise_model)
 
 
 @pytest.mark.local
-class TestBraketLocalSimulator:
+class TestBraketLocalWaveFunctionsSimulator:
     def test_setup_basic_simulators(self, wf_simulator):
-        assert isinstance(wf_simulator, BraketLocalSimulator)
+        assert isinstance(wf_simulator, BraketLocalWaveFunctionsSimulator)
         # assert wf_simulator.noise_model is None
 
     def test_run_and_measure(self):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)])
-        simulator = BraketLocalSimulator()
+        simulator = BraketLocalWaveFunctionsSimulator()
         measurements = simulator.run_and_measure(circuit, n_samples=100)
         assert len(measurements.bitstrings) == 100
 
@@ -55,7 +61,7 @@ class TestBraketLocalSimulator:
     def test_measuring_inactive_qubits(self):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)], n_qubits=4)
-        simulator = BraketLocalSimulator()
+        simulator = BraketLocalWaveFunctionsSimulator()
         measurements = simulator.run_and_measure(circuit, n_samples=100)
         assert len(measurements.bitstrings) == 100
 
@@ -64,7 +70,7 @@ class TestBraketLocalSimulator:
 
     def test_run_batch_and_measure(self):
         # Given
-        simulator = BraketLocalSimulator()
+        simulator = BraketLocalWaveFunctionsSimulator()
         circuit = Circuit([X(0), CNOT(1, 2)])
         n_circuits = 5
         n_samples = 100
@@ -81,7 +87,7 @@ class TestBraketLocalSimulator:
 
     def test_get_wavefunction(self):
         # Given
-        simulator = BraketLocalSimulator()
+        simulator = BraketLocalWaveFunctionsSimulator()
         circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
 
         # When
@@ -100,7 +106,7 @@ class TestBraketLocalSimulator:
         # Given
         noise = 0.0002
         noise_model = Noise.Depolarizing(probability=noise)
-        simulator = BraketLocalSimulator(noise_model=noise_model)
+        simulator = BraketLocalWaveFunctionsSimulator(noise_model=noise_model)
         circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
         qubit_operator = PauliTerm({0: "Z", 1: "Z"}, -1) + PauliTerm({0: "X", 2: "X"})
         target_values = np.array([-0.9986673775881747, 0.0])
@@ -116,8 +122,8 @@ class TestBraketLocalSimulator:
     def test_run_and_measure_seed(self):
         # Given
         circuit = Circuit([X(0), CNOT(1, 2)])
-        simulator1 = BraketLocalSimulator()
-        simulator2 = BraketLocalSimulator()
+        simulator1 = BraketLocalWaveFunctionsSimulator()
+        simulator2 = BraketLocalWaveFunctionsSimulator()
 
         # When
         measurements1 = simulator1.run_and_measure(circuit, n_samples=1000)
@@ -127,24 +133,20 @@ class TestBraketLocalSimulator:
         for (meas1, meas2) in zip(measurements1.bitstrings, measurements2.bitstrings):
             assert meas1 == meas2
 
-    def test_get_wavefunction_seed(self):
-        # Given
-        circuit = Circuit([H(0), CNOT(0, 1), CNOT(1, 2)])
-        simulator1 = BraketLocalSimulator()
-        simulator2 = BraketLocalSimulator()
-
-        # When
-        wavefunction1 = simulator1.get_wavefunction(circuit)
-        wavefunction2 = simulator2.get_wavefunction(circuit)
-
-        # Then
-        for (ampl1, ampl2) in zip(wavefunction1.amplitudes, wavefunction2.amplitudes):
-            assert ampl1 == ampl2
-
     def test_get_wavefunction_uses_provided_initial_state(self, wf_simulator):
         pytest.xfail("Braket simulator only accepts zero state as initial state")
 
 
 @pytest.mark.parametrize("contract", CIRCUIT_RUNNER_CONTRACTS)
 def test_braket_local_runner_fulfills_circuit_runner_contracts(runner, contract):
+    assert contract(runner)
+
+
+@pytest.mark.parametrize("contract", simulator_contracts_for_tolerance())
+def test_symbolic_simulator_fulfills_simulator_contracts(runner, contract):
+    assert contract(runner)
+
+
+@pytest.mark.parametrize("contract", STRICT_CIRCUIT_RUNNER_CONTRACTS)
+def test_symbolic_simulator_fulfills_strict_circuit_runnner(runner, contract):
     assert contract(runner)
