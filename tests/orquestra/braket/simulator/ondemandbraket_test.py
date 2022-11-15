@@ -17,7 +17,7 @@ from orquestra.quantum.api.wavefunction_simulator_contracts import (
 )
 from orquestra.quantum.circuits import CNOT, Circuit, X
 
-from orquestra.integrations.braket.runner import BraketOnDemandSimulator
+from orquestra.integrations.braket.simulator import BraketOnDemandSimulator
 
 boto_session_type = os.environ["SESSION_TYPE"]
 

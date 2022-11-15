@@ -14,7 +14,7 @@ from orquestra.quantum.api.wavefunction_simulator_contracts import (
 from orquestra.quantum.circuits import CNOT, Circuit, H, X
 from orquestra.quantum.operators import PauliTerm
 
-from orquestra.integrations.braket.runner import BraketLocalSimulator
+from orquestra.integrations.braket.simulator import BraketLocalSimulator
 
 
 @pytest.fixture(
