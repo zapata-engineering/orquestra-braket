@@ -9,7 +9,7 @@ from orquestra.quantum.circuits import Circuit
 from orquestra.quantum.measurements import Measurements
 
 from orquestra.integrations.braket.conversions import export_to_braket
-from orquestra.integrations.braket.simulator._utils import _get_arn
+from orquestra.integrations.braket._utils import _get_arn
 
 
 class BraketRunner(BaseCircuitRunner):

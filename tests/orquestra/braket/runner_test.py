@@ -32,7 +32,9 @@ def boto_session():
         braket_local_runner(noise_model=Noise.Depolarizing(probability=0.1))
     ]
 )
-def test_braket_runner_fulfills_circuit_runner_contracts(contract, runner):
+def test_local_braket_runner_fulfills_circuit_runner_contracts(
+    contract, runner
+):
     assert contract(runner)
 
 
@@ -45,7 +47,7 @@ def test_braket_runner_fulfills_circuit_runner_contracts(contract, runner):
         {"name": "dm1", "noise_model": Noise.Depolarizing(probability=0.4)}
     ]
 )
-def test_braket_runner_fulfills_circuit_runner_contracts(
+def test_aws_runner_fulfills_circuit_runner_contracts(
     contract,
     runner_params,
     boto_session
