@@ -12,14 +12,19 @@ from orquestra.integrations.braket.runner import BraketRunner
 
 
 class _BraketWavefunctionSimulator(BraketRunner):
-
     def __init__(self, device: Device):
         super().__init__(device)
 
     def get_wavefunction(
         self, circuit: Circuit, initial_state: Optional[StateVector] = None
     ) -> Wavefunction:
-        # TODO: raise ValueError if initial state is not [00000>
+
+        if initial_state is not None:
+            if initial_state[0] != 1 or initial_state:
+                raise ValueError(
+                    "AWS Braket simulators can be initialized only in the zero states"
+                )
+
         braket_circuit = export_to_braket(circuit)
         braket_circuit.state_vector()
 
