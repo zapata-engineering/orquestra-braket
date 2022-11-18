@@ -18,6 +18,16 @@ class _BraketWavefunctionSimulator(BraketRunner):
     def get_wavefunction(
         self, circuit: Circuit, initial_state: Optional[StateVector] = None
     ) -> Wavefunction:
+        """
+        Creates a wavefunction for a given circuit and initial state
+
+        Args:
+            circuit: the circuit to prepare the state
+            initial_state: initial state of the system
+
+        Returns:
+            Wavefunction
+        """
 
         if initial_state is not None:
             if initial_state[0] != 1 or initial_state:
@@ -26,8 +36,9 @@ class _BraketWavefunctionSimulator(BraketRunner):
                 )
 
         braket_circuit = export_to_braket(circuit)
-        braket_circuit.state_vector()
 
+        # Braket's convention to return statevector result type
+        braket_circuit.state_vector()
         result = self.device.run(braket_circuit, shots=0).result()
         self._n_jobs_executed += 1
         self._n_circuits_executed += 1
@@ -36,6 +47,14 @@ class _BraketWavefunctionSimulator(BraketRunner):
     def get_exact_expectation_values(
         self, circuit: Circuit, operator: PauliRepresentation
     ) -> float:
+        """
+        Provides the expectation values for a given circuit and operator
+
+        Args:
+            circuit: circuit to prepare the state
+            operator: operator to measure
+
+        """
         wavefunction = self.get_wavefunction(circuit)
         return get_expectation_value(operator, wavefunction).real
 
