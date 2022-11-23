@@ -86,7 +86,7 @@ def braket_local_runner(
 def aws_runner(
     boto_session: Session,
     name: str = "SV1",
-    noise_model: Type[Noise] = None,
+    noise_model: Optional[Type[Noise]] = None,
     s3_destination_folder: Optional[Union[str, Tuple]] = None,
 ) -> BraketRunner:
     """
