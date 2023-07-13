@@ -20,9 +20,6 @@ def export_to_braket(circuit: Circuit) -> BraketCircuit:
       BraketCircuit
     """
 
-    for i in range(circuit.n_qubits):
-        circuit += I(i)
-
     gates = [_to_braket_gate(operation) for operation in circuit.operations]
     return BraketCircuit(gates)
 
