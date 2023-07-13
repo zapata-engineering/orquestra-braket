@@ -13,7 +13,7 @@ To install it, make to install `orquestra-quantum` first. Then you just need to 
 
 `orquestra-braket` is a Python module that exposes Braket's runner and simulators as an [`orquestra`](https://github.com/zapatacomputing/orquestra-quantum/blob/main/src/orquestra/quantum/api/backend.py) `CircuitRunner` and `WavefunctionSimulator`. They can be imported with:
 
-```
+```python
 from orquestra.integrations.braket.runner import BraketRunner
 from orquestra.integrations.braket.simulator import braket_local_simulator
 ```
@@ -29,7 +29,7 @@ For more information regarding Orquestra and resources, please refer to the [Orq
 
 In order to use Braket's `on-demand simulator`, a `boto.Session` must be created using AWS credentials. See [Boto Session](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html) for information on creating creating a session. It highly recommended that credentials are configured in the local [AWS CLI profile](https://docs.aws.amazon.com/braket/latest/developerguide/braket-using-boto3-profiles-step-2.html). Following is an example of working with `BraketOnDemandSimulator` using credentials stored in AWS CLI profile:
 
-```
+```python
 from orquestra.integrations.braket.runner import aws_runner
 from boto3 import Session
 
@@ -43,7 +43,7 @@ simulator = aws_runner(name = simulator_name, noise_model = noise_model, boto_se
 
 Below is an example of finding the names of on-demand simulators:
 
-```
+```python
 from boto3 import Session
 from braket.aws import AwsSession, AwsDevice
 
@@ -57,7 +57,7 @@ Simulators = AwsDevice.get_devices(types=['SIMULATOR'], aws_session)
 
 This library will allow you to access the QPUs provided by AWS Braket. The process is very similar to the `BraketOnDemandSimulator`. Here is how we can get started:
 
-```
+```python
 from orquestra.integrations.braket.runner import aws_runner
 
 QPU_name = "IonQ Device"
@@ -67,7 +67,7 @@ backend = aws_runner(name = QPU_name, s3_destination_folder = s3, boto_session =
 
 If you want to find the list of QPU names provided by Braket, use the following method:
 
-```
+```python
 from orquestra.integrations.braket.runner import get_QPU_names
 
 QPU_names = get_QPU_names(boto_session)
@@ -75,7 +75,7 @@ QPU_names = get_QPU_names(boto_session)
 
 After setting up the QPU, you can use the following approach to send a task to a QPU.
 
-```
+```python
 QPU_task = backend.run_and_measure(circ, n_samples)
 ```
 
