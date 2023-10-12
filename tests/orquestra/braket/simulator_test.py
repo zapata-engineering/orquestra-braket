@@ -33,7 +33,11 @@ def test_braket_local_wf_simulator_fulfills_circuit_runner_contracts(contract):
     assert contract(simulator)
 
 
-@pytest.mark.parametrize("contract", simulator_gate_compatibility_contracts())
+@pytest.mark.local
+# Braket doesn't support the RH gate, so we're excluding it from the test set.
+@pytest.mark.parametrize(
+    "contract", simulator_gate_compatibility_contracts(gates_to_exclude=["RH"])
+)
 def test_braket_simulator_uses_correct_gate_definitionscontract(contract):
     simulator = braket_local_simulator()
     assert contract(simulator)
